@@ -1,0 +1,143 @@
+﻿<Window x:Class="Ray2StringEd.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ray2StringEd"
+        mc:Ignorable="d"
+        Title="Ray2StringEd"
+        Height="500" Width="350"
+        MinHeight="400" MinWidth="300"
+        d:DataContext="{d:DesignInstance local:MainViewModel}">
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Grid.Column="0" Header="Fix Path"
+                  VerticalAlignment="Stretch"
+                  Width="Auto"
+                  Margin="0 0 0 5"
+                  Padding="2">
+            <DockPanel>
+
+                <Button Margin="2 0 0 0"
+                        Content="..."
+                        DockPanel.Dock="Right"
+                        Command="{Binding ChooseFileCommand}" />
+            
+                <TextBox Text="{Binding FixPath}"
+                         HorizontalAlignment="Stretch"/>
+
+            </DockPanel>
+        </GroupBox>
+
+        <WrapPanel Grid.Row="1"
+                   HorizontalAlignment="Left">
+
+            <Button Content="Read Fix"
+                    Command="{Binding ReadFixCommand}" />
+
+            <Button Content="Write Fix"
+                    Margin="3 0"
+                    Command="{Binding WriteFixCommand}"
+                    IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}"/>
+
+        </WrapPanel>
+
+        <Button Grid.Row="1"
+                HorizontalAlignment="Right"
+                Content="Go to offset"
+                Click="GoToOffset"
+                IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}"/>
+
+        <ListView Grid.Row="2"
+                  Name="StringsList"
+                  Margin="0 5"
+                  SizeChanged="ListViewSizeChanged"
+                  ItemsSource="{Binding FixStrings}"
+                  SelectedItem="{Binding SelectedItem}">
+            <ListView.View>
+                <GridView>
+
+                    <GridViewColumn Header="Offset" DisplayMemberBinding="{Binding Offset, StringFormat={}0x{0:X}}" />
+
+                    <GridViewColumn Header="String">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock Text="{Binding Text}"
+                                           TextTrimming="CharacterEllipsis"/>
+
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Length">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+
+                                <TextBlock Text="{Binding ByteLength}"
+                                           TextAlignment="Right" />
+
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <GroupBox Grid.Row="3"
+                  Header="Selected String"
+                  Padding="2 3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBox Grid.Row="0" Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Name="EditBox"
+                         Padding="2"
+                         Text="{Binding SelectedItem.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap"
+                         MaxLength="{Binding SelectedItem.MaxTextLength}"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Margin="0 5"
+                           Text="{Binding SelectedItem.Offset, StringFormat='Offset: 0x{0:X}'}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="{Binding SelectedItem.ByteLength, StringFormat='Byte length: {0}'}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Margin="0 5"
+                           Text="{Binding Text.Length, ElementName=EditBox, StringFormat='Text length: {0}'}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="1">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource SubtractConverter}"
+                                      StringFormat="Chars left: {0}">
+                            <Binding Path="SelectedItem.MaxTextLength" Mode="OneWay" />
+                            <Binding Path="Text.Length" ElementName="EditBox" Mode="OneWay" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+            </Grid>
+        </GroupBox>
+
+    </Grid>
+
+</Window>

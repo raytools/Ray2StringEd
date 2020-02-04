@@ -1,0 +1,45 @@
+﻿<Window x:Class="Ray2StringEd.OffsetEntryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ray2StringEd"
+        mc:Ignorable="d"
+        SizeToContent="Height"
+        SnapsToDevicePixels="True"
+        ResizeMode="NoResize"
+        Title="Go to offset" Width="250">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="String hex offset:" />
+
+        <TextBox Grid.Row="1"
+                 Margin="0 10"
+                 Padding="2"
+                 Name="OffsetBox"/>
+
+        <WrapPanel Grid.Row="2"
+                   HorizontalAlignment="Right">
+
+            <Button Content="Go"
+                    Margin="3 0"
+                    Width="60"
+                    Click="ClickGo"
+                    IsDefault="True" />
+
+            <Button Content="Cancel"
+                    Width="60"
+                    IsCancel="True" />
+
+        </WrapPanel>
+
+    </Grid>
+
+</Window>

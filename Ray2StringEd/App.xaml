@@ -1,0 +1,25 @@
+﻿<Application x:Class="Ray2StringEd.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Ray2StringEd"
+             xmlns:converters="clr-namespace:Ray2StringEd.Converters"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <converters:SubtractConverter x:Key="SubtractConverter" />
+        <converters:NotNullConverter x:Key="NotNullConverter" />
+
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Padding" Value="5 2" />
+        </Style>
+
+        <Style TargetType="MenuItem" x:Key="MenuBarItem">
+            <Setter Property="Padding" Value="8 2" />
+        </Style>
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+         
+    </Application.Resources>
+</Application>
