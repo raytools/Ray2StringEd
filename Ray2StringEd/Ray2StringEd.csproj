@@ -48,6 +48,10 @@
     <Reference Include="PropertyChanged, Version=3.2.5.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.3.2.5\lib\net40\PropertyChanged.dll</HintPath>
     </Reference>
+    <Reference Include="R2MagicDecoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\R2MagicDecoder.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -127,6 +131,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="RTI.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="R2MagicDecoder.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

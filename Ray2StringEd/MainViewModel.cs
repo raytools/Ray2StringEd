@@ -17,6 +17,8 @@ namespace Ray2StringEd
             WriteFixCommand = new RelayCommand(WriteFix);
         }
 
+        private FixManager Manager { get; set; }
+
         public ObservableCollection<FixString> FixStrings { get; set; }
         public string FixPath { get; set; }
         public FixString SelectedItem { get; set; }
@@ -25,7 +27,7 @@ namespace Ray2StringEd
         public ICommand ReadFixCommand { get; }
         public ICommand WriteFixCommand { get; }
 
-        public void ChooseFile()
+        private void ChooseFile()
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.ShowDialog();
@@ -34,20 +36,20 @@ namespace Ray2StringEd
                 FixPath = dialog.FileName;
         }
 
-        public void ReadFix()
+        private void ReadFix()
         {
             if (!File.Exists(FixPath)) return;
             
-            FixManager fix = new FixManager(FixPath);
-            FixStrings = new ObservableCollection<FixString>(fix.ReadFix());
+            Manager = new FixManager(FixPath);
+            FixStrings = new ObservableCollection<FixString>(Manager.ReadFix());
         }
 
-        public void WriteFix()
+        private void WriteFix()
         {
             if (!File.Exists(FixPath)) return;
 
-            FixManager fix = new FixManager(FixPath);
-            fix.WriteFix(FixStrings);
+            Manager.BackupFix();
+            Manager.WriteFix(FixStrings);
 
             MessageBox.Show($"Written {FixStrings.Count} strings to {FixPath}.");
         }
