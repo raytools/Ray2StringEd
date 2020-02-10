@@ -6,65 +6,105 @@
         xmlns:local="clr-namespace:Ray2StringEd"
         mc:Ignorable="d"
         Title="Ray2StringEd"
-        Height="500" Width="350"
-        MinHeight="400" MinWidth="300"
+        SnapsToDevicePixels="True"
+        Height="500" Width="600"
+        MinHeight="400" MinWidth="500"
         d:DataContext="{d:DesignInstance local:MainViewModel}">
 
     <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" MaxWidth="220" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Header="Fix Path"
-                  VerticalAlignment="Stretch"
-                  Width="Auto"
-                  Margin="0 0 0 5"
-                  Padding="2">
-            <DockPanel>
+        <StackPanel Grid.Row="0" Grid.Column="0"
+                    Grid.RowSpan="2">
 
-                <Button Margin="2 0 0 0"
-                        Content="..."
-                        DockPanel.Dock="Right"
-                        Command="{Binding ChooseFileCommand}" />
+            <GroupBox Header="Fix Path"
+                      VerticalAlignment="Stretch"
+                      Width="Auto"
+                      Margin="0 0 0 5">
+                <StackPanel>
+
+                    <DockPanel>
+                        <Button Margin="2 0 0 0"
+                                Content="..."
+                                DockPanel.Dock="Right"
+                                Command="{Binding ChooseFileCommand}" />
             
-                <TextBox Text="{Binding FixPath}"
-                         HorizontalAlignment="Stretch"/>
+                        <TextBox Text="{Binding FixPath}"
+                                 HorizontalAlignment="Stretch"/>
+                    </DockPanel>
 
-            </DockPanel>
-        </GroupBox>
+                    <WrapPanel Margin="0 5 0 0"
+                               HorizontalAlignment="Left">
 
-        <WrapPanel Grid.Row="1"
-                   HorizontalAlignment="Left">
+                        <Button Content="Read"
+                                Command="{Binding ReadFixCommand}" />
 
-            <Button Content="Read Fix"
-                    Command="{Binding ReadFixCommand}" />
+                        <Button Content="Write"
+                                Margin="4 0 0 0"
+                                Command="{Binding WriteFixCommand}"
+                                IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}"/>
 
-            <Button Content="Write Fix"
-                    Margin="3 0"
-                    Command="{Binding WriteFixCommand}"
-                    IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}"/>
+                    </WrapPanel>
 
-        </WrapPanel>
+                </StackPanel>
+            </GroupBox>
 
-        <Button Grid.Row="1"
-                HorizontalAlignment="Right"
-                Content="Go to offset"
-                Click="GoToOffset"
-                IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}"/>
+            <GroupBox Header="Tools"
+                      Margin="0 0 0 5"
+                      IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}">
+                <WrapPanel HorizontalAlignment="Center">
 
-        <ListView Grid.Row="2"
+                    <Button Content="Go to offset"
+                            Style="{StaticResource SideButton}"
+                            Click="GoToOffset" />
+
+                    <Button Content="Copy offset"
+                            Style="{StaticResource SideButton}"
+                            Command="{Binding CopyOffsetCommand}" />
+
+                    <Button Content="Copy string"
+                            Style="{StaticResource SideButton}"
+                            Command="{Binding CopyTextCommand}"
+                            Margin="2 0" />
+
+                </WrapPanel>
+            </GroupBox>
+
+            <GroupBox Header="CSV"
+                      IsEnabled="{Binding FixStrings, Converter={StaticResource NotNullConverter}, Mode=OneWay}">
+                <WrapPanel HorizontalAlignment="Center">
+
+                    <Button Content="Import"
+                            Width="60"
+                            Margin="0 0 4 0"
+                            Command="{Binding ImportCsvCommand}" />
+
+                    <Button Content="Export"
+                            Width="60"
+                            Command="{Binding ExportCsvCommand}" />
+
+                </WrapPanel>
+            </GroupBox>
+
+        </StackPanel>
+
+        <ListView Grid.Row="0" Grid.Column="1"
                   Name="StringsList"
-                  Margin="0 5"
+                  Margin="5 0 0 0"
                   SizeChanged="ListViewSizeChanged"
                   ItemsSource="{Binding FixStrings}"
                   SelectedItem="{Binding SelectedItem}">
             <ListView.View>
                 <GridView>
 
-                    <GridViewColumn Header="Offset" DisplayMemberBinding="{Binding Offset, StringFormat={}0x{0:X}}" />
+                    <GridViewColumn Header="Offset" DisplayMemberBinding="{Binding Offset, StringFormat='0x{0:X}', Mode=OneWay}" />
 
                     <GridViewColumn Header="String">
                         <GridViewColumn.CellTemplate>
@@ -92,9 +132,9 @@
             </ListView.View>
         </ListView>
 
-        <GroupBox Grid.Row="3"
+        <GroupBox Grid.Row="1" Grid.Column="1"
                   Header="Selected String"
-                  Padding="2 3">
+                  Margin="5 5 0 0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -116,10 +156,10 @@
 
                 <TextBlock Grid.Row="1" Grid.Column="0"
                            Margin="0 5"
-                           Text="{Binding SelectedItem.Offset, StringFormat='Offset: 0x{0:X}'}" />
+                           Text="{Binding SelectedItem.Offset, StringFormat='Offset: 0x{0:X}', Mode=OneWay}" />
 
                 <TextBlock Grid.Row="2" Grid.Column="0"
-                           Text="{Binding SelectedItem.ByteLength, StringFormat='Byte length: {0}'}" />
+                           Text="{Binding SelectedItem.ByteLength, StringFormat='Byte length: {0}', Mode=OneWay}" />
 
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Margin="0 5"

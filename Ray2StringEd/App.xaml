@@ -10,7 +10,7 @@
         <converters:NotNullConverter x:Key="NotNullConverter" />
 
         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Padding" Value="5 2" />
+            <Setter Property="Padding" Value="6 2" />
         </Style>
 
         <Style TargetType="MenuItem" x:Key="MenuBarItem">
@@ -19,6 +19,15 @@
 
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Padding" Value="2 5" />
+        </Style>
+
+        <Style x:Key="SideButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Margin" Value="2 0 2 4" />
         </Style>
          
     </Application.Resources>

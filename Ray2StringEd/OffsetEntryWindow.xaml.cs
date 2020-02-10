@@ -9,25 +9,33 @@ namespace Ray2StringEd
     /// </summary>
     public partial class OffsetEntryWindow : Window
     {
-        public OffsetEntryWindow()
+        public OffsetEntryWindow(long previousOffset)
         {
             InitializeComponent();
-            Loaded += (sender, e) =>
-                MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+            Loaded += (sender, e) => FocusTextBox();
+
+            OffsetBox.Text = previousOffset > 0 ? previousOffset.ToString("X") : string.Empty;
         }
 
-        public int Offset { get; private set; }
+        public long Offset { get; private set; }
         public bool Result { get; private set; }
 
         private void ClickGo(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(OffsetBox.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int offset))
-                return;
+            if (int.TryParse(OffsetBox.Text, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int offset))
+            {
+                Offset = offset;
+                Result = true;
 
-            Offset = offset;
-            Result = true;
+                Close();
+            }
+            else FocusTextBox();
+        }
 
-            Close();
+        private void FocusTextBox()
+        {
+            MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+            OffsetBox.SelectAll();
         }
     }
 }
